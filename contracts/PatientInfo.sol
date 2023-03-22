@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
-contract HealthCareDataManagement {
+contract PatientInfo {
     address private owner;
 
     struct PatientRecord {
@@ -12,7 +12,7 @@ contract HealthCareDataManagement {
         string contactNumber; // contact number of the individual
         string email; // email address of the individual
         string add;
-        uint Verification;
+        bool Verification;
     }
     mapping(address => PatientRecord) private patients;
 
@@ -25,7 +25,7 @@ contract HealthCareDataManagement {
     }
     modifier verified(){
         require(
-            patients[msg.sender].Verification != 0,
+            patients[msg.sender].Verification != false,
             "The Patient needs to be verified first"
         );
         _;
@@ -33,7 +33,7 @@ contract HealthCareDataManagement {
     constructor() {
         owner = msg.sender;
     }
-    function createRecord(
+    function create_Pat_Record(
         string memory name, 
         uint age,
         string memory nationality,
@@ -44,8 +44,40 @@ contract HealthCareDataManagement {
      
     ) public{
         require(age > 0 && age < 120, "Invalid age.");
-        uint Verification;
-        patients[msg.sender] = PatientRecord(name, age, nationality, gender, contactNumber, email, add, Verification = 0);
+        bool Verification;
+        patients[msg.sender] = PatientRecord(name, age, nationality, gender, contactNumber, email, add, Verification = false);
 
     }
+    function verification(address patient_address) public onlyOwner{
+        require(patients[patient_address].Verification != true, "Already Verified");
+        patients[patient_address].Verification = true;
+    }
+    function getPatientRecord(address patientAddress)
+        public
+        view
+        onlyOwner
+        returns (
+            string memory name, 
+            uint age,
+            string memory nationality,
+            string memory gender,
+            string memory contactNumber, 
+            string memory email
+            ){
+            require(
+                patients[patientAddress].age != 0, "Patient Record does not exist"
+            );
+            require(
+                patients[patientAddress].Verification == true, "Patient is not Verified yet"
+            );
+            return (
+            patients[patientAddress].name,
+            patients[patientAddress].age,
+            patients[patientAddress].nationality,
+            patients[patientAddress].gender,
+            patients[patientAddress].contactNumber,
+            patients[patientAddress].email
+            
+        );
+        }
 }
