@@ -5,12 +5,12 @@ contract PatientInfo {
     address private owner;
 
     struct PatientRecord {
-        string name; // full name of the individual
-        uint age; // date of birth of the individual (format: YYYY-MM-DD)
-        string nationality; // nationality of the individual
-        string gender; // gender of the individual
-        string contactNumber; // contact number of the individual
-        string email; // email address of the individual
+        string name; 
+        uint age; 
+        string nationality; 
+        string gender; 
+        string contactNumber; 
+        string email; 
         string add;
         bool Verification;
     }
