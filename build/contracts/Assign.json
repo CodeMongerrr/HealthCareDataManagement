@@ -1,0 +1,141 @@
+{
+  "contractName": "Assign",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Assign.sol\":\"Assign\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Assign.sol\":{\"keccak256\":\"0x7e62815cdd67a25571c12c71b44607dd39e11a7bb806c9ec4bbc8005fe8f4946\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://90653c6855bbb22a6d20262377aaa61cb51fa50af1d8ad666017a1f5093743c0\",\"dweb:/ipfs/QmYNK4dFQ7Uc5n7CFx3SE2ReEit78S8UujhGscHM8qw5qb\"]},\"project:/contracts/PatientInfo.sol\":{\"keccak256\":\"0x580cbba78bcbc5100258657e31c79f321b0f1866acd74885e894ce39f9bf1140\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://01b24df62f12d177bdd1fee8f785ae477c7eb3a68237afc53701df616cac00eb\",\"dweb:/ipfs/QmT9evd6ZAqeCJMFX4K2AYn5Lh45uYPvAtUu8dzYJJsnPz\"]},\"project:/contracts/PractitionerInfo.sol\":{\"keccak256\":\"0xf916a01ecc7970b92ec02692a8958beacdb6664fa1b6b1920b405136a5f9f1ce\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://82c9edf0e3bc22412c0d85f03d16be29a9cc1e92a78214b7dc05285f2f3a5720\",\"dweb:/ipfs/QmPUHbuj6snPMfMYqgM6VnUKu8ycCt8D6VmJd6RjGbR2Rx\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220d53c599dfdf5402cae2b164caaa06f502036f10c6054360f8dff6b8775f00b4d64736f6c63430008110033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220d53c599dfdf5402cae2b164caaa06f502036f10c6054360f8dff6b8775f00b4d64736f6c63430008110033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "121:53:0:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "121:53:0:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity 0.8.17;\r\nimport \"./PatientInfo.sol\";\r\nimport \"./PractitionerInfo.sol\";\r\ncontract Assign{\r\n    address private owner;\r\n    \r\n}",
+  "sourcePath": "C:\\Users\\ajsty\\OneDrive\\Desktop\\VS_Code\\HealthCareDataManagement\\contracts\\Assign.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/Assign.sol",
+    "exportedSymbols": {
+      "Assign": [
+        6
+      ],
+      "PatientInfo": [
+        820
+      ],
+      "Prac_Info": [
+        1001
+      ]
+    },
+    "id": 7,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "0.8",
+          ".17"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:0"
+      },
+      {
+        "absolutePath": "project:/contracts/PatientInfo.sol",
+        "file": "./PatientInfo.sol",
+        "id": 2,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 7,
+        "sourceUnit": 821,
+        "src": "58:27:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "project:/contracts/PractitionerInfo.sol",
+        "file": "./PractitionerInfo.sol",
+        "id": 3,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 7,
+        "sourceUnit": 1002,
+        "src": "87:32:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "Assign",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 6,
+        "linearizedBaseContracts": [
+          6
+        ],
+        "name": "Assign",
+        "nameLocation": "130:6:0",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 5,
+            "mutability": "mutable",
+            "name": "owner",
+            "nameLocation": "159:5:0",
+            "nodeType": "VariableDeclaration",
+            "scope": 6,
+            "src": "143:21:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 4,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "143:7:0",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "visibility": "private"
+          }
+        ],
+        "scope": 7,
+        "src": "121:53:0",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:141:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x1A20e896165d513c90166a90eDF05e5983790E33",
+      "transactionHash": "0x549dc33fd0ee603cd9d9dd20084e43c79acdf8ca19cc2dc2c8e3531155606cd4"
+    }
+  },
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-03-22T16:11:18.430Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
