@@ -56,6 +56,7 @@ contract PatientInfo {
         public
         view
         onlyOwner
+        verified
         returns (
             string memory name, 
             uint age,
@@ -64,12 +65,6 @@ contract PatientInfo {
             string memory contactNumber, 
             string memory email
             ){
-            require(
-                patients[patientAddress].age != 0, "Patient Record does not exist"
-            );
-            require(
-                patients[patientAddress].Verification == true, "Patient is not Verified yet"
-            );
             return (
             patients[patientAddress].name,
             patients[patientAddress].age,

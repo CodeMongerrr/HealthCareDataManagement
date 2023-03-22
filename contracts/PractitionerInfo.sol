@@ -66,6 +66,6 @@ contract Prac_Info{
         string memory prac_ID,
         string memory patientIDs
     ){
-
+        
     }
 }
