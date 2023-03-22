@@ -11,7 +11,7 @@ contract PatientInfo {
         string gender; 
         string contactNumber; 
         string email; 
-        string add;
+        uint patientID;
         bool Verification;
     }
     mapping(address => PatientRecord) private patients;
@@ -39,13 +39,12 @@ contract PatientInfo {
         string memory nationality,
         string memory gender,
         string memory contactNumber, 
-        string memory email,
-        string memory add
-     
+        string memory email
     ) public{
         require(age > 0 && age < 120, "Invalid age.");
         bool Verification;
-        patients[msg.sender] = PatientRecord(name, age, nationality, gender, contactNumber, email, add, Verification = false);
+        uint patientID = uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,name))) % age;
+        patients[msg.sender] = PatientRecord(name, age, nationality, gender, contactNumber, email, patientID, Verification = false);
 
     }
     function verification(address patient_address) public onlyOwner{
@@ -63,7 +62,8 @@ contract PatientInfo {
             string memory nationality,
             string memory gender,
             string memory contactNumber, 
-            string memory email
+            string memory email,
+            uint patientID
             ){
             return (
             patients[patientAddress].name,
@@ -71,8 +71,8 @@ contract PatientInfo {
             patients[patientAddress].nationality,
             patients[patientAddress].gender,
             patients[patientAddress].contactNumber,
-            patients[patientAddress].email
-            
+            patients[patientAddress].email,
+            patients[patientAddress].patientID
         );
         }
 }
