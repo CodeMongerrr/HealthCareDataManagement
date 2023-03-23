@@ -75,4 +75,7 @@ contract PatientInfo {
             patients[patientAddress].patientID
         );
         }
+    function authorize_prac(string memory prac_ID) public{
+        
+    }
 }

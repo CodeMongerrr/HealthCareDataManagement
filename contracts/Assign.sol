@@ -12,4 +12,9 @@ contract Assign{
     }
     
     //We need to make a set of functions in the form of modifiers that would allow us to take the opinion of both, prac and patient and then only the patientID will be appended in the Practitioner's list 
+    function request(string memory patientID) public {
+        
+    }
+
+
 }    
