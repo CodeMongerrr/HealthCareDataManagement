@@ -2,19 +2,40 @@
 pragma solidity 0.8.17;
 import "./PatientInfo.sol";
 import "./PractitionerInfo.sol";
-contract Assign{
+
+contract Assign {
     address private owner;
     PatientInfo public patient_;
     Prac_Info public prac_;
-    constructor(address patientInfo_address, address pracInfo_address){
+    mapping(address => mapping(address => bool)) private access;
+
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Only contract owner can perform this action."
+        );
+        _;
+    }
+
+    function newcontract(address patientInfo_address,address pracInfo_address) public {
+        owner = msg.sender;
         patient_ = PatientInfo(patientInfo_address);
         prac_ = Prac_Info(pracInfo_address);
     }
-    
-    //We need to make a set of functions in the form of modifiers that would allow us to take the opinion of both, prac and patient and then only the patientID will be appended in the Practitioner's list 
-    function request(string memory patientID) public {
-        
+
+    function grantAccess(address patient, address practitioner) public {
+        access[patient][practitioner] = true;
+        patient_.Medical_Records(access[patient][practitioner], patient);
     }
 
-
-}    
+    function revokeAccess(address patient, address practitioner) public {
+        access[patient][practitioner] = false;
+    }
+    
+    function checkAccess(
+        address patient,
+        address practitioner
+    ) public view returns (bool) {
+        return access[patient][practitioner];
+    }
+}
