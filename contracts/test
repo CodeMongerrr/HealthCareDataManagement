@@ -1,0 +1,280 @@
+
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.17;
+contract Prac_Info{
+    address private owner;
+    struct Prac_Record{
+        string name;
+        uint age;
+        string gender;
+        string  contactNumber;
+        string prac_ID;
+        string patientIDs;
+        bool Verification;
+    }
+    mapping(address => Prac_Record) private pracs;
+
+    modifier onlyOwner(){
+        require(
+            msg.sender == owner, "Only Contract Owner can perform this action"
+        );
+        _;
+    }
+
+    modifier verified(){
+        require(
+            pracs[msg.sender].Verification != false, 
+            "The Practitioner needs to be Verified first"
+        );
+        _;
+    }
+
+    constructor(){
+        owner = msg.sender;
+    }
+
+    function create_Prac_Record(
+        string memory name,
+        uint age,
+        string memory gender,
+        string memory contactNumber,
+        string memory prac_ID,
+        string memory patientIDs
+    ) public{
+        require(age > 0 && age < 120, "Invalid Age");
+        bool Verification;
+        pracs[msg.sender] = Prac_Record(name, age, gender, contactNumber, prac_ID, patientIDs, Verification = false);
+    }
+
+    function verification(address prac_address) public onlyOwner{
+        require(pracs[prac_address].Verification != true, "Already Verified");
+        pracs[prac_address].Verification = true;
+    }
+
+    function get_prac_record(address prac_address) public view onlyOwner verified
+    returns(
+        string memory name,
+        uint age,
+        string memory gender,
+        string memory contactNumber,
+        string memory prac_ID,
+        string memory patientIDs
+    ){
+        return(
+            pracs[prac_address].name,
+            pracs[prac_address].age,
+            pracs[prac_address].gender,
+            pracs[prac_address].contactNumber,
+            pracs[prac_address].prac_ID,
+            pracs[prac_address].patientIDs
+        );
+    }
+}
+contract PatientInfo {
+    address private owner;
+
+    struct PatientRecord {
+        string name; 
+        uint age; 
+        string nationality; 
+        string gender; 
+        string contactNumber; 
+        string email; 
+        uint patientID;
+        string[] medical_records;
+        bool Verification;
+    }
+    mapping(address => PatientRecord) private patients;
+
+
+    event Pending_Requests(
+        string[] medical_records
+    );
+
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Only contract owner can perform this action."
+        );
+        _;
+    }
+    modifier verified(){
+        require(
+            patients[msg.sender].Verification != false,
+            "The Patient needs to be verified first"
+        );
+        _;
+    }
+    constructor() {
+        owner = msg.sender;
+    }
+    function create_Pat_Record(
+        string memory name, 
+        uint age,
+        string memory nationality,
+        string memory gender,
+        string memory contactNumber, 
+        string memory email,
+        string[] memory medical_records
+    ) public{
+        require(age > 0 && age < 120, "Invalid age.");
+        bool Verification;
+        uint patientID = uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,name))) % age;
+        patients[msg.sender] = PatientRecord(name, age, nationality, gender, contactNumber, email, patientID, medical_records, Verification = false);
+
+    }
+    function verification(address patient_address) public onlyOwner{
+        require(patients[patient_address].Verification != true, "Already Verified");
+        patients[patient_address].Verification = true;
+    }
+    function getPatientRecord(address patientAddress)
+        public
+        view
+        onlyOwner
+        verified
+        returns (
+            string memory name, 
+            uint age,
+            string memory nationality,
+            string memory gender,
+            string memory contactNumber, 
+            string memory email,
+            uint patientID
+            ){
+            return (
+            patients[patientAddress].name,
+            patients[patientAddress].age,
+            patients[patientAddress].nationality,
+            patients[patientAddress].gender,
+            patients[patientAddress].contactNumber,
+            patients[patientAddress].email,
+            patients[patientAddress].patientID
+        );
+        }
+}
+
+interface PatientInfoInterface {
+    function getPatientRecord(address patientAddress)
+        external
+        view
+        returns (
+            string memory name,
+            uint age,
+            string memory nationality,
+            string memory gender,
+            string memory contactNumber,
+            string memory email,
+            uint patientID
+        );
+    function requestApproval(address practitioner) external;
+}
+
+interface PracInfoInterface {
+    function getPracRecord(address prac_address) 
+        external 
+        view 
+        returns (
+            string memory name,
+            uint age,
+            string memory gender,
+            string memory contactNumber,
+            string memory prac_ID,
+            string memory patientIDs
+        );
+    function verification(address prac_address) external;
+}
+
+contract AccessControl {
+    address private owner;
+    mapping(address => mapping(address => bool)) private access;
+
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Only contract owner can perform this action."
+        );
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }const providerUrl = 'http://localhost:7545';
+
+    function grantAccess(address patient, address practitioner)
+        public
+    {
+        access[patient][practitioner] = true;
+    }
+
+    function revokeAccess(address patient, address practitioner)
+        public
+    {
+        access[patient][practitioner] = false;
+    }
+
+    function checkAccess(address patient, address practitioner)
+        public
+        view
+        returns (bool)
+    {
+        return access[patient][practitioner];
+    }
+}
+
+contract MedicalRecordAccess is AccessControl {
+    PatientInfoInterface private patientInfo;
+    PracInfoInterface private pracInfo;
+
+    constructor(address _patientInfoAddress, address _pracInfoAddress) {
+        patientInfo = PatientInfoInterface(_patientInfoAddress);
+        pracInfo = PracInfoInterface(_pracInfoAddress);
+    }
+
+    function requestAccess()
+        public
+    {
+        patientInfo.requestApproval(msg.sender);
+    }
+
+    function grantAccess(address patientAddress)
+        public
+    {
+        require(patientAddress != address(0), "Invalid patient address.");
+        require(checkAccess(patientAddress, msg.sender), "Access not granted by patient.");
+        pracInfo.verification(msg.sender);
+        grantAccess(patientAddress, msg.sender);
+    }
+
+    function getPatientRecord(address patientAddress)
+        public
+        view
+        returns (
+            string memory name,
+            uint age,
+            string memory nationality,
+            string memory gender,
+            string memory contactNumber,
+            string memory email,
+            uint patientID
+        )
+    {
+        require(checkAccess(patientAddress, msg.sender), "Access not granted.");
+        return patientInfo.getPatientRecord(patientAddress);
+    }
+
+    function getPracRecord()
+        public
+        view
+        returns (
+            string memory name,
+            uint age,
+            string memory gender,
+            string memory contactNumber,
+            string memory prac_ID,
+            string memory patientIDs
+        )
+    {
+        require(checkAccess(msg.sender, address(0)), "Access not granted.");
+        return pracInfo.getPracRecord(msg.sender);
+    }
+}

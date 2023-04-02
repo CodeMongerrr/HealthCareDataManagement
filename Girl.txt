@@ -1,0 +1,35 @@
+truffle deploy --reset
+
+truffle console
+
+let patient = await PatientInfo.deployed()
+
+let Prac = await Prac_Info.deployed()
+
+let Assign = await Assign.deployed()
+
+await patient.create_Pat_Record({name: "Alice", age: 30, nationality: "USA", gender: "Female", contactNumber: "+1234567890", email: "alice@email.com"}, {record_CIDs:["CID123", "CID456"], display: false});
+
+await patient.verification("0xeBBA150433dB9C465D064c95e3c4573d1f0D227f")
+
+web3.eth.defaultAccount = web3.eth.accounts[2];
+
+await Prac.create_Prac_Record("John Smith", 35, "Male", "555-1234", "PRAC-001", ["PAT-001", "PAT-002", "PAT-003"]);
+
+await Prac.verification("0xCa8B7e8a4f945DcAb0f0d0a8322C6867419fC8b9")
+
+await Assign.grantAccess("0xeBBA150433dB9C465D064c95e3c4573d1f0D227f","0xCa8B7e8a4f945DcAb0f0d0a8322C6867419fC8b9")
+
+await patient.getPatientRecord("0xeBBA150433dB9C465D064c95e3c4573d1f0D227f")
+Wallet_Addresses[
+  '0xeBBA150433dB9C465D064c95e3c4573d1f0D227f',
+  '0xCa8B7e8a4f945DcAb0f0d0a8322C6867419fC8b9',
+  '0x592971CAF899275D56D8d4F6a6844a9baAdF0c0A',
+  '0xCdfFd58520D81a2bd9C38F8CaE5dF37CA02d80b5',
+  '0x1A4E69678C913B883d93A1dd676f01f9b81049fc',
+  '0x69DBF038c750aD3D5928a8F8b9Aec1E3ECbB11b9',
+  '0xAcbCA67F947DA23E3038b749e9536973bBd7537D',
+  '0x9aDdf16A63B2a128c617951a504b8bFB744f9f91',
+  '0x18D0BF9eCAB64f63117fFd6B3a401B64d6dC0B71',
+  '0x7BEe35fda266780C7fBA5385D035979760f20358'
+]

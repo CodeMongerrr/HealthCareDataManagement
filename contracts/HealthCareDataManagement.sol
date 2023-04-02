@@ -5,7 +5,7 @@ contract HealthCareDataManagement {
     address private owner;
     uint256 private patientCount;
 
-    struct Patient {
+    struct Patient{
         string name;
         uint256 age;
         string ailment;
