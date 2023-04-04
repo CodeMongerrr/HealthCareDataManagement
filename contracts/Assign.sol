@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
-import "./PatientInfo.sol";
+import "./Patient_Info.sol";
 import "./PractitionerInfo.sol";
 
 contract Assign {
@@ -25,7 +25,6 @@ contract Assign {
 
     function grantAccess(address patient, address practitioner) public {
         access[patient][practitioner] = true;
-        patient_.Medical_Records(access[patient][practitioner], patient);
     }
 
     function revokeAccess(address patient, address practitioner) public {

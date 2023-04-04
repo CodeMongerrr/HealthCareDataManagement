@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
-import "contracts/PatientInfo.sol";
+import "./Patient_Info.sol";
 contract Prac_Info {
     address private owner;
     PatientInfo private patient_;
-
+    mapping(address => mapping(address => bool)) private access;
     struct Prac_Record {
         string name;
         uint age;
@@ -104,5 +104,11 @@ contract Prac_Info {
             patient_.getPatientRecord_for_prac(patientAddress)
         );    
     }
+    function grantAccess(address patient, address practitioner) public {
+        access[patient][practitioner] = true;
+    }
 
+    function revokeAccess(address patient, address practitioner) public {
+        access[patient][practitioner] = false;
+    }
 }

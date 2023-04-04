@@ -1,4 +1,4 @@
-const PatientInfo = artifacts.require("PatientInfo.sol");
+var PatientInfo = artifacts.require("PatientInfo.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(PatientInfo);

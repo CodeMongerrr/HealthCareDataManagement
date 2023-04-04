@@ -9,6 +9,7 @@ let Prac = await Prac_Info.deployed()
 let Assign = await Assign.deployed()
 
 await patient.create_Pat_Record({name: "Alice", age: 30, nationality: "USA", gender: "Female", contactNumber: "+1234567890", email: "alice@email.com"}, {record_CIDs:["CID123", "CID456"], display: false});
+patient.create_Pat_Record("John Doe", 35, "USA", "Male", "555-1234", "johndoe@example.com");
 
 await patient.verification("0xeBBA150433dB9C465D064c95e3c4573d1f0D227f")
 
@@ -19,6 +20,11 @@ await Prac.create_Prac_Record("John Smith", 35, "Male", "555-1234", "PRAC-001", 
 await Prac.verification("0xCa8B7e8a4f945DcAb0f0d0a8322C6867419fC8b9")
 
 await Assign.grantAccess("0xeBBA150433dB9C465D064c95e3c4573d1f0D227f","0xCa8B7e8a4f945DcAb0f0d0a8322C6867419fC8b9")
+
+await Prac.newcontract(patient.address)
+
+await Prac.get_pat_record("0xeBBA150433dB9C465D064c95e3c4573d1f0D227f")
+
 
 await patient.getPatientRecord("0xeBBA150433dB9C465D064c95e3c4573d1f0D227f")
 Wallet_Addresses[

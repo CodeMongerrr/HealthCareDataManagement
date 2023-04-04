@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
-
+import "./PractitionerInfo.sol";
 contract PatientInfo {
     address private owner;
-
+    Prac_Info private practitioner_;
     struct PatientRecord {
         string name; 
         uint age; 
@@ -33,6 +33,10 @@ contract PatientInfo {
     constructor() {
         owner = msg.sender;
     }
+    function newcontract(address pracInfo_address) public verified{
+        practitioner_ = Prac_Info(pracInfo_address);
+    }
+
     function create_Pat_Record(
         string memory name, 
         uint age,
@@ -75,7 +79,7 @@ contract PatientInfo {
         );
         }
     function getPatientRecord_for_prac(address patientAddress)
-        public
+        private
         view
         returns (
             string memory name, 
