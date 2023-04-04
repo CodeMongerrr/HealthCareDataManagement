@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
-import "./PatientInfo";
+import "contracts/PatientInfo.sol";
 contract Prac_Info {
     address private owner;
     PatientInfo private patient_;
@@ -59,7 +59,7 @@ contract Prac_Info {
         );
     }
 
-    function verification(address prac_address) public onlyOwner {
+    function verification(address prac_address) public {
         require(pracs[prac_address].Verification != true, "Already Verified");
         pracs[prac_address].Verification = true;
     }
@@ -89,9 +89,20 @@ contract Prac_Info {
             pracs[prac_address].patientIDs
         );
     }
-    function get_pat_record(address patientAddress) public view onlyOwner {returns(string[])
+    function get_pat_record(address patientAddress) public view onlyOwner 
+        returns(
+            string memory name, 
+            uint age,
+            string memory nationality,
+            string memory gender,
+            string memory contactNumber, 
+            string memory email,
+            uint patientID
+        ){
+        
         return(
-            patient_.getPatientRecord(patientAddress)
-        )
+            patient_.getPatientRecord_for_prac(patientAddress)
+        );    
     }
+
 }
