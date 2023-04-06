@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
-import "./Patient_Info.sol";
+import "./PatientInfo.sol";
 import "./PractitionerInfo.sol";
 
 contract Assign {
