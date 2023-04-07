@@ -11,8 +11,8 @@ contract Prac_Info {
         uint age;
         string gender;
         string contactNumber;
-        string prac_ID;
-        string[] patientIDs;
+        uint prac_ID;
+        address[] patientIDs;
         bool Verification;
     }
     mapping(address => Prac_Record) private pracs;
@@ -50,11 +50,13 @@ contract Prac_Info {
         uint age,
         string memory gender,
         string memory contactNumber,
-        string memory prac_ID,
-        string[] memory patientIDs
+        address[] memory patientIDs
     ) public {
         require(age > 0 && age < 120, "Invalid Age");
         bool Verification;
+        uint256 prac_ID = uint256(
+            keccak256(abi.encodePacked(block.timestamp, msg.sender, name))
+        ) % age;
         pracs[msg.sender] = Prac_Record(
             name,
             age,
@@ -66,7 +68,7 @@ contract Prac_Info {
         );
     }
 
-    function verification(address prac_address) public {
+    function verification(address prac_address) public onlyOwner{
         require(pracs[prac_address].Verification != true, "Already Verified");
         pracs[prac_address].Verification = true;
     }
@@ -76,15 +78,13 @@ contract Prac_Info {
     )
         public
         view
-        onlyOwner
-        verified
         returns (
             string memory name,
             uint age,
             string memory gender,
             string memory contactNumber,
-            string memory prac_ID,
-            string[] memory patientIDs
+            uint prac_ID,
+            address[] memory patientIDs
         )
     {
         return (
@@ -103,26 +103,32 @@ contract Prac_Info {
     )
         public
         view
-        onlyOwner
         returns (
             string memory name,
             uint patientID,
-            address[] memory prac_Ids,
-            bool prac_side,
+            address prac_Ids,
             bool pat_side
         )
     {
         return (patient_.getPatientRecord_for_prac(patientAddress));
     }
-    function grantAccess(address patientaddress, bool permission) public{
-        patient_.grantAccess(msg.sender, permission, patientaddress);
+
+    function addRecord(address practitioneraddress,address hash,  address patientaddress) public verified{
+        patient_.addrecord(practitioneraddress, hash, patientaddress);
     }
 
-    function getMedicalRecords(address patientaddress) public view onlyOwner returns(address[] memory){
-        return(patient_.approved(patientaddress, msg.sender));
+    function askforaccess(address practitioneraddress, address patientaddress) public verified{
+        patient_.pending_requests(practitioneraddress, patientaddress);
     }
-    function addRecord(address patientaddress,address hash, address practioneraddress) public onlyOwner{
-        patient_.addRecord(patientaddress, hash, practioneraddress);
+
+    function accessrecords(address practitioneraddress, address patientaddress) public verified{
+        patient_.accessrecords(practitioneraddress, patientaddress);
+        pracs[practitioneraddress].patientIDs.push(patientaddress);
+
     }
-    
+    function is_prac_linked(address practitioneraddress, address patientaddress) external returns(address[] memory){
+        return(
+            pracs[practitioneraddress].patientIDs
+        );
+    }
 }
